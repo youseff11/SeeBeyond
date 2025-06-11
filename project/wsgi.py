@@ -6,5 +6,5 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings')
 
 application = get_wsgi_application()
 
-# قم بإزالة السطر التالي:
-# handler = application
+# أعد إضافة هذا السطر
+handler = application
