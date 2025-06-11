@@ -8,7 +8,7 @@
         "maxLambdaSize": "15mb",
         "buildCommand": "python project/manage.py collectstatic --noinput && python project/manage.py migrate",
         "wsgi": "project.wsgi.application",
-        "migrations": true
+        "pythonVersion": "3.11" 
       }
     }
   ],
