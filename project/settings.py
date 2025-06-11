@@ -1,20 +1,17 @@
 from dotenv import load_dotenv
 from pathlib import Path
 import os
-import dj_database_url # تأكد من استيراد هذه المكتبة
+import dj_database_url
 
 load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # استخدم متغير بيئة للمفتاح السري
 SECRET_KEY = os.environ.get('SECRET_KEY')
-# تأكد من أن المفتاح السري موجود لتجنب المشاكل في الإنتاج
 if not SECRET_KEY:
     raise ValueError("SECRET_KEY environment variable not set.")
 
 # تحديد وضع DEBUG بناءً على بيئة النشر
-# إذا كان DATABASE_URL موجودًا (كما في Vercel)، فنحن في الإنتاج (DEBUG=False)
-# وإلا، فنحن في التطوير المحلي (DEBUG=True)
 IS_PRODUCTION_ENV = os.environ.get('DATABASE_URL') is not None
 
 if IS_PRODUCTION_ENV:
@@ -24,9 +21,6 @@ else:
 
 # سمح بالوصول من نطاقات Vercel والتطوير المحلي
 ALLOWED_HOSTS = ['.vercel.app', 'localhost', '127.0.0.1']
-# يمكنك لاحقًا إضافة اسم النطاق المخصص الخاص بك هنا إذا كان لديك
-# مثال: ALLOWED_HOSTS = ['.vercel.app', 'www.yourdomain.com', 'yourdomain.com', 'localhost', '127.0.0.1']
-
 
 INSTALLED_APPS = [
     'contact.apps.ContactConfig',
@@ -71,21 +65,20 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'project.wsgi.application' # تأكد أن هذا يشير إلى 'application' وليس 'app' هنا
+WSGI_APPLICATION = 'project.wsgi.app' # تأكد أن هذا يشير إلى 'app' هنا (كما اتفقنا لـ Vercel)
+
 
 # Database
-# استخدام PostgreSQL مع متغيرات البيئة للإنتاج، و SQLite3 للتطوير المحلي
-# يجب أن يكون DATABASE_URL موجودًا في متغيرات بيئة Vercel (أو في ملف .env محليًا للاتصال بـ Supabase من local)
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
-if DATABASE_URL: # إذا كان متغير DATABASE_URL موجودًا (مثل على Vercel)
+if DATABASE_URL:
     DATABASES = {
         'default': dj_database_url.config(
             default=DATABASE_URL,
-            conn_max_age=600  # للحفاظ على الاتصالات نشطة
+            conn_max_age=600
         )
     }
-else: # إذا لم يكن موجودًا (على جهازك المحلي)
+else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -118,16 +111,20 @@ USE_I18N = True
 USE_TZ = True
 
 
-# إعدادات الملفات الثابتة (Static Files) للإنتاج
-STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles') # هذا المجلد هو المكان الذي سيتم تجميع الملفات الثابتة فيه في الإنتاج
-STATIC_URL = '/static/' # تأكد من أن هذا يبدأ بشرطة مائلة
+# إعدادات الملفات الثابتة (Static Files)
+# STATIC_ROOT: حيث يقوم collectstatic بتجميع جميع الملفات الثابتة في الإنتاج
+STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles') 
 
-# هذا يخبر Django أين يبحث عن ملفاتك الثابتة (CSS, JS, صور التصميم)
-# 'static' يشير إلى مجلد 'static' في جذر مشروع Django الخاص بك
+# STATIC_URL: المسار الأساسي لخدمة الملفات الثابتة عبر الويب
+STATIC_URL = '/static/' 
+
+# STATICFILES_DIRS: قائمة المجلدات الإضافية التي يجب على Django البحث فيها عن الملفات الثابتة.
+# هنا يجب أن نشير إلى مجلد 'static' الموجود داخل مجلد 'project' الرئيسي.
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static') # <--- تم تعديل هذا السطر!
+    os.path.join(BASE_DIR, 'project', 'static') # <--- تم التصحيح هنا!
 ]
 
+# تكوين WhiteNoise لتخزين الملفات الثابتة المضغوطة والـ hashed filenames
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
@@ -140,4 +137,4 @@ LOGIN_URL = 'login'
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
-MEDIA_URL = '/media/' # تأكد من أن هذا يبدأ بشرطة مائلة
+MEDIA_URL = '/media/'
