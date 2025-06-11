@@ -1,0 +1,34 @@
+{% load static %}
+{% include "parts/nav.html" %} {# <--- هنا هتضمين شريط التنقل بتاعك #}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+
+    <main>
+        <div class="product-detail-container">
+            {% if product %}
+                <div class="product-image-section">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% else %}
+                        <img src="{% static 'images/placeholder.jpg' %}" alt="No Image"> {# تأكد ان الصورة دي موجودة #}
+                    {% endif %}
+                </div>
+                <div class="product-info-section">
+                    <h1 class="product-name">{{ product.name }}</h1>
+                    <p class="product-price">${{ product.price|floatformat:2 }}</p>
+                    <p class="product-description">{{ product.description }}</p>
+                    {# زرار إضافة للعربة أو أي أزرار تانية #}
+                    <button class="btn-add-to-cart" data-product-id="{{ product.id }}">Add to Cart</button>
+                    <a href="{% url 'shop' %}" class="btn-back-to-shop">Back to Shop</a> {# <--- تأكد إن 'shop' هو اسم الـ URL الصحيح لصفحة الشوب #}
+                </div>
+            {% else %}
+                <p>Product not found.</p>
+            {% endif %}
+        </div>
+    </main>
+{% endblock content %}
+
+{% include "parts/footer.html" %} {# <--- هنا هتضمين الفوتر بتاعك #}
+
+<script src="{% static 'js/product_actions.js' %}"></script>

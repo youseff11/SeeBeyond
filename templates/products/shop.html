@@ -1,0 +1,43 @@
+{% load static %}
+{% include "parts/nav.html" %}
+
+{% block content %}
+    <main>
+    <link rel="stylesheet" href="{% static 'css/shop.css' %}">
+
+        <div class="shop-container">
+            <h1 class="shop-title">Our T-Shirts</h1>
+            <p class="shop-intro">Discover our latest collection of stylish and comfortable t-shirts.</p>
+
+            <div class="product-grid">
+                {% if products %}
+                    {% for product in products %}
+                        <div class="product-card">
+                            <div class="product-image-wrapper">
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                                {% else %}
+                                    {# صورة افتراضية لو المنتج ملوش صورة #}
+                                    <img src="{% static 'images/placeholder.jpg' %}" alt="No Image" class="product-image">
+                                {% endif %}
+
+                                {# هذا الجزء سيظهر بالكامل عند التمرير على الكارت #}
+                                <div class="product-details-overlay">
+                                    <h3 class="overlay-name">{{ product.name }}</h3> {# اسم المنتج في الأوفرلاي #}
+                                    <p class="overlay-description">{{ product.description|truncatechars:150 }}</p> {# عرض جزء من الوصف #}
+                                    <p class="overlay-price">${{ product.price|floatformat:2 }}</p>
+                                    <a href="{% url 'product_detail' product.id %}" class="overlay-btn-view-details">View Details</a>
+                                </div>
+                            </div>
+                            {# لم يعد هناك product-info منفصلة لأن كل التفاصيل أصبحت داخل الأوفرلاي #}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="no-products">No t-shirts available at the moment. Please check back later!</p>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+{% endblock content %}
+
+{% include "parts/footer.html" %}

@@ -1,0 +1,112 @@
+{% load static %}
+{% include "parts/nav.html" %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static "css/home.css" %}">
+<div class="overlay" id="overlay"></div>
+
+<section class="hero">
+    <div class="container">
+        {# Image is located in 'images' folder inside 'shop' #}
+        <img src="{% static "images/50.jpg" %}" alt="ByBeyond Products" class="hero-image">
+        <div class="hero-content">
+            <h1>Welcome to SeeBeyond</h1>
+            <p>Discover our unique product collection and exclusive offers</p>
+            <a href="{% url 'shop' %}" class="btn btn-primary">Shop Now</a> {# Link adjusted to {% url 'shop' %} #}
+        </div>
+    </div>
+</section>
+
+    <section class="features">
+        <div class="container">
+            <div class="feature-box">
+                <i class="fas fa-truck"></i>
+                <h3>Fast Shipping</h3>
+                <p>Delivery within 24-48 hours</p>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-undo"></i>
+                <h3>Easy Returns</h3>
+                <p>14-day return policy</p>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-lock"></i>
+                <h3>Secure Payment</h3>
+                <p>Multiple secure payment methods</p>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-headset"></i>
+                <h3>Technical Support</h3>
+                <p>24/7 support available</p>
+            </div>
+        </div>
+    </section>
+
+<section class="featured-products">
+    <div class="container">
+        <h2 class="section-title">Featured Products</h2>
+        <div class="products-grid">
+            <div class="product-card-simple">
+                <div class="product-image-wrapper">
+                    {# Image is located in 'images' folder inside 'shop' #}
+                    <img src="{% static "images/15.jpg" %}" alt="Product Name" class="product-image">
+                    <div class="product-badge">New</div>
+                    <div class="product-title-overlay">Product Name</div>
+                </div>
+            </div>
+            
+            <div class="product-card-simple">
+                <div class="product-image-wrapper">
+                    {# Image is located in 'images' folder inside 'shop' #}
+                    <img src="{% static "images/17.jpg" %}" alt="Product Name" class="product-image">
+                    <div class="product-badge sale">Sale</div>
+                    <div class="product-title-overlay">Product Name</div>
+                </div>
+            </div>
+            
+            <div class="product-card-simple">
+                <div class="product-image-wrapper">
+                    {# Image is located in 'images' folder inside 'shop' #}
+                    <img src="{% static "images/18.jpg" %}" alt="Product Name" class="product-image">
+                    <div class="product-title-overlay">Product Name</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <section class="premium-newsletter">
+    <div class="container">
+        <div class="newsletter-content">
+            <div class="newsletter-text">
+                <h2>Join Our Premium Community</h2>
+                <p>Get the latest updates and exclusive offers before anyone else</p>
+            </div>
+            <form class="newsletter-form">
+                <div class="input-group">
+                    <input type="email" placeholder="Your Email" required>
+                    <button type="submit" class="btn-subscribe">
+                        <span>Subscribe Now</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="newsletter-features">
+                    <div class="feature-item">
+                        <i class="fas fa-gift"></i>
+                        <span>Exclusive offers for newsletter members</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-lock"></i>
+                        <span>Guaranteed Privacy</span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+{% endblock content %}
+
+{% include "parts/footer.html" %}

@@ -1,0 +1,42 @@
+{% load static %}
+{% include "parts/nav.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/cart_summary.css' %}">
+
+<main class="cart-summary-main">
+    <h1>Your Shopping Cart</h1>
+    <div class="cart-items-container">
+        {% if cart %}
+            {% for item in cart %} {# loop directly over 'cart' which now contains processed items #}
+            <div class="cart-item" id="cart-item-{{ item.product_id }}"> {# Add ID for easy removal #}
+                <img src="{{ item.image_url }}" alt="{{ item.name }}" class="cart-item-image">
+                <div class="cart-item-details">
+                    <h3>{{ item.name }}</h3>
+                    <p>Price: ${{ item.price|floatformat:2 }}</p>
+                    <div class="item-quantity">
+                        <span>Quantity: </span>
+                        <button class="quantity-btn decrease-btn" data-product-id="{{ item.product_id }}" data-action="decrease">-</button>
+                        <input type="number" value="{{ item.quantity }}" min="1" class="quantity-input" data-product-id="{{ item.product_id }}">
+                        <button class="quantity-btn increase-btn" data-product-id="{{ item.product_id }}" data-action="increase">+</button>
+                    </div>
+                    <p class="item-subtotal">Subtotal: ${{ item.subtotal|floatformat:2 }}</p>
+                    <button class="btn-remove-item" data-product-id="{{ item.product_id }}">Remove</button>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="cart-total">
+                <h2>Total: <span id="cart-total-value">${{ cart_total|floatformat:2 }}</span></h2>
+                <button class="btn-checkout">Confirm Order</button>
+            </div>
+        {% else %}
+            <p id="empty-cart-message" style="text-align: center;">Your cart is empty. <a href="{% url 'shop' %}">Start shopping!</a></p>
+        {% endif %}
+    </div>
+</main>
+
+{% endblock content %}
+
+{% include "parts/footer.html" %}
+
+<script src="{% static 'js/cart_actions.js' %}"></script>

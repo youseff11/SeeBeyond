@@ -1,0 +1,203 @@
+/* General styling for the cart summary page */
+.cart-summary-main {
+    padding: 80px 20px 40px; /* Padding top to clear fixed navbar, plus some general padding */
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif; /* Use your preferred font */
+    color: #333;
+}
+
+.cart-summary-main h1 {
+    text-align: center;
+    color: #19422f; /* Dark green similar to your nav items */
+    margin-bottom: 30px;
+    font-size: 2.5em;
+    font-weight: 600;
+}
+
+/* Styling for the container holding all cart items */
+.cart-items-container {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding: 20px;
+}
+
+/* Styling for each individual item in the cart */
+.cart-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+    gap: 20px;
+}
+
+.cart-item:last-child {
+    border-bottom: none; /* No border for the last item */
+}
+
+.cart-item-image {
+    width: 100px; /* Fixed width for product image */
+    height: 100px; /* Fixed height to keep it square */
+    object-fit: cover; /* Crop image to fit */
+    border-radius: 5px;
+    flex-shrink: 0; /* Prevent image from shrinking */
+}
+
+.cart-item-details {
+    flex-grow: 1; /* Allows details to take up remaining space */
+}
+
+.cart-item-details h3 {
+    margin: 0 0 5px;
+    color: #19422f;
+    font-size: 1.3em;
+}
+
+.cart-item-details p {
+    margin: 3px 0;
+    font-size: 0.95em;
+    color: #555;
+}
+
+/* Quantity controls styling */
+.item-quantity {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Reduced gap for a tighter look */
+    margin: 10px 0;
+}
+
+.item-quantity .quantity-input {
+    width: 50px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 1em;
+}
+
+.item-quantity .quantity-input::-webkit-outer-spin-button,
+.item-quantity .quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.item-quantity .quantity-btn {
+    background-color: #5286a8; /* Color from your nav-item::after */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 30px;
+    height: 30px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex; /* For centering the +/- symbol */
+    justify-content: center;
+    align-items: center;
+}
+
+.item-quantity .quantity-btn:hover {
+    background-color: #3b6d8d;
+}
+
+/* Remove item button styling */
+.btn-remove-item {
+    background-color: #e74c3c; /* Red for remove */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.btn-remove-item:hover {
+    background-color: #c0392b;
+}
+
+/* Cart total and checkout section */
+.cart-total {
+    text-align: right;
+    padding: 20px 0 0;
+    border-top: 1px solid #eee;
+    margin-top: 20px;
+}
+
+.cart-total h2 {
+    color: #19422f;
+    font-size: 1.8em;
+    margin-bottom: 15px;
+}
+
+#cart-total-value {
+    font-weight: bold;
+    color: #0e2b1f; /* A slightly darker green for the total */
+}
+
+.btn-checkout {
+    background-color: #4a6bff; /* Blue from your .btn class */
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-checkout:hover {
+    background-color: #3a56d4;
+    transform: translateY(-2px);
+}
+
+/* Styling for empty cart message */
+#empty-cart-message {
+    font-size: 1.2em;
+    color: #777;
+    padding: 50px 20px;
+}
+#empty-cart-message a {
+    color: #19422f;
+    text-decoration: underline;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .cart-summary-main {
+        padding: 80px 15px 30px;
+    }
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
+    .cart-item-image {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 10px;
+    }
+    .cart-item-details {
+        width: 100%;
+    }
+    .cart-total {
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .cart-summary-main h1 {
+        font-size: 2em;
+    }
+    .btn-checkout {
+        width: 100%;
+        padding: 10px;
+    }
+    .item-quantity {
+        justify-content: center; /* Center quantity controls on small screens */
+    }
+}

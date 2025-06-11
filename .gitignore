@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python/
+env/
+venv/
+*egg-info/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.venv/
+
+# Database
+db.sqlite3
+*.sqlite3
+/media/ # لا ترفع ملفات الوسائط التي يحملها المستخدمون مباشرة
+
+# Vercel / Environment variables
+.env
+.env.local
+.vercel/
+.vercel

@@ -1,0 +1,27 @@
+{% load static %}
+{% include "parts/nav.html" %} {# <--- هنا هتضمين شريط التنقل بتاعك #}
+
+{% block content %}
+
+    <link rel="stylesheet" href="{% static 'css/form.css' %}">
+
+    <main>
+        <div class="add-address-container">
+            <h1>Add New Address</h1>
+            <form method="post">
+                {% csrf_token %}
+                {# هنا هتحط حقول الفورم بتاعت إضافة العنوان الفعلية #}
+                <p>Address Line 1: <input type="text" name="address_line1" required></p>
+                <p>Address Line 2 (Optional): <input type="text" name="address_line2"></p>
+                <p>City: <input type="text" name="city" required></p>
+                <p>State/Province: <input type="text" name="state" required></p>
+                <p>Postal Code: <input type="text" name="postal_code" required></p>
+                <p>Country: <input type="text" name="country" required></p>
+                <button type="submit">Save Address</button>
+            </form>
+            <a href="{% url 'my_account' %}" class="btn-back-to-account">Back to My Account</a> {# <--- تأكد إن 'my_account' هو اسم الـ URL الصحيح لصفحة الحساب #}
+        </div>
+    </main>
+{% endblock content %}
+
+{% include "parts/footer.html" %} {# <--- هنا هتضمين الفوتر بتاعك #}
