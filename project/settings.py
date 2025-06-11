@@ -17,7 +17,7 @@ IS_PRODUCTION_ENV = os.environ.get('DATABASE_URL') is not None
 if IS_PRODUCTION_ENV:
     DEBUG = False
 else:
-    DEBUG = True # تفعيل DEBUG للتطوير المحلي (مهم لعرض الملفات الثابتة والوسائط)
+    DEBUG = True
 
 # سمح بالوصول من نطاقات Vercel والتطوير المحلي
 ALLOWED_HOSTS = ['.vercel.app', 'localhost', '127.0.0.1']
@@ -32,13 +32,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # لا تنسى تشغيل `pip install whitenoise` إذا لم تكن قد فعلت ذلك بالفعل
-    # وتحديث ملف requirements.txt
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    # أضف WhiteNoise هنا لخدمة الملفات الثابتة بكفاءة في الإنتاج
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -65,7 +62,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'project.wsgi.app' # تأكد أن هذا يشير إلى 'app' هنا (كما اتفقنا لـ Vercel)
+WSGI_APPLICATION = 'project.wsgi.app' # تأكد أن هذا يشير إلى 'app' هنا
 
 
 # Database
@@ -85,7 +82,6 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -119,12 +115,11 @@ STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 STATIC_URL = '/static/' 
 
 # STATICFILES_DIRS: قائمة المجلدات الإضافية التي يجب على Django البحث فيها عن الملفات الثابتة.
-# هنا يجب أن نشير إلى مجلد 'static' الموجود داخل مجلد 'project' الرئيسي.
+# هذا يشير إلى مجلد 'static' الموجود داخل مجلد 'project' الرئيسي.
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'project', 'static') # <--- تم التصحيح هنا!
+    os.path.join(BASE_DIR, 'project', 'static') 
 ]
 
-# تكوين WhiteNoise لتخزين الملفات الثابتة المضغوطة والـ hashed filenames
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
