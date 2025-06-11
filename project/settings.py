@@ -71,8 +71,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'project.wsgi.application'
-
+WSGI_APPLICATION = 'project.wsgi.application' # تأكد أن هذا يشير إلى 'application' وليس 'app' هنا
 
 # Database
 # استخدام PostgreSQL مع متغيرات البيئة للإنتاج، و SQLite3 للتطوير المحلي
@@ -120,10 +119,13 @@ USE_TZ = True
 
 
 # إعدادات الملفات الثابتة (Static Files) للإنتاج
-STATIC_ROOT = os.path.join(BASE_DIR,'static')
+STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles') # هذا المجلد هو المكان الذي سيتم تجميع الملفات الثابتة فيه في الإنتاج
 STATIC_URL = '/static/' # تأكد من أن هذا يبدأ بشرطة مائلة
+
+# هذا يخبر Django أين يبحث عن ملفاتك الثابتة (CSS, JS, صور التصميم)
+# 'static' يشير إلى مجلد 'static' في جذر مشروع Django الخاص بك
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'project/static')
+    os.path.join(BASE_DIR, 'static') # <--- تم تعديل هذا السطر!
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
