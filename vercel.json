@@ -6,8 +6,8 @@
       "use": "@vercel/python",
       "config": {
         "maxLambdaSize": "15mb",
-        "buildCommand": "python project/manage.py collectstatic --noinput", 
-        "wsgi": "project.wsgi.application",
+        "buildCommand": "python project/manage.py collectstatic --noinput",
+        "app": "project.wsgi.app", 
         "pythonVersion": "3.11"
       }
     }
