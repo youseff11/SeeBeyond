@@ -12,6 +12,7 @@ from decimal import Decimal
 from .models import Order, OrderItem, Profile # تأكد من استيراد Profile
 from products.models import Product
 from .forms import CustomUserCreationForm, ProfileUpdateForm # تأكد من استيراد ProfileUpdateForm
+from django.db import transaction # استيراد المعاملات
 
 # --- 1. User Authentication & Authorization Views ---
 
@@ -268,56 +269,76 @@ def process_order(request):
     if request.user.is_authenticated:
         customer = request.user
     else:
-        customer = None 
+        customer = None
 
     cart = request.session.get('cart', {})
     if not cart:
         return JsonResponse({'success': False, 'message': 'Your cart is empty. Cannot process an empty order.'}, status=400)
 
     try:
-        order = Order.objects.create(
-            user=customer,
-            complete=False, 
-            transaction_id=transaction_id,
-            total_price=Decimal('0.00') 
-        )
+        with transaction.atomic(): #  ابدأ المعاملة هنا
+            order = Order.objects.create(
+                user=customer,
+                complete=False,
+                transaction_id=transaction_id,
+                total_price=Decimal('0.00')
+            )
 
-        calculated_total_price = Decimal('0.00')
+            calculated_total_price = Decimal('0.00')
+            
+            # قائمة لتخزين معرفات المنتجات التي لم يتم العثور عليها أو التي سببت مشاكل
+            problematic_products = []
 
-        for product_id_str, item_data in cart.items():
-            try:
-                product = Product.objects.get(id=int(product_id_str))
-                quantity = int(item_data['quantity'])
-                price_at_order = product.price 
+            for product_id_str, item_data in cart.items():
+                try:
+                    product = Product.objects.get(id=int(product_id_str))
+                    quantity = int(item_data['quantity'])
+                    price_at_order = product.price
 
-                if quantity <= 0:
-                    continue
+                    if quantity <= 0:
+                        continue
 
-                OrderItem.objects.create(
-                    product=product,
-                    order=order,
-                    quantity=quantity,
-                    price_at_order=price_at_order
-                )
-                calculated_total_price += (price_at_order * quantity)
-            except Product.DoesNotExist:
-                print(f"Product with ID {product_id_str} not found during order processing, skipping.")
-            except Exception as e:
-                print(f"Error creating OrderItem for product {product_id_str}: {e}")
+                    OrderItem.objects.create(
+                        product=product,
+                        order=order,
+                        quantity=quantity,
+                        price_at_order=price_at_order
+                    )
+                    calculated_total_price += (price_at_order * quantity)
+                except Product.DoesNotExist:
+                    # إذا لم يتم العثور على المنتج، أضفه إلى قائمة المنتجات التي بها مشاكل
+                    problematic_products.append(f"Product with ID {product_id_str} not found.")
+                    print(f"Product with ID {product_id_str} not found during order processing, skipping.")
+                    # يمكنك هنا اختيار رفع استثناء لوقف المعاملة بالكامل إذا كنت لا تريد تخطي المنتجات المفقودة
+                    # raise  # uncomment to raise error and rollback transaction
+                except Exception as e:
+                    # أي خطأ آخر في إنشاء OrderItem
+                    problematic_products.append(f"Error for product ID {product_id_str}: {e}")
+                    print(f"Error creating OrderItem for product {product_id_str}: {e}")
+                    # raise  # uncomment to raise error and rollback transaction
 
-        order.total_price = calculated_total_price.quantize(Decimal('0.01'))
-        order.save() 
+            # إذا كانت هناك أي منتجات بها مشاكل، يمكنك التعامل معها هنا
+            if problematic_products:
+                # إذا كنت تريد أن تفشل المعاملة بالكامل في حالة وجود أي مشكلة:
+                raise Exception(f"Failed to process order due to issues with some products: {'; '.join(problematic_products)}")
+                # وإلا، يمكنك الاستمرار مع الطلب الناجح جزئياً
+                # ولكن من الأفضل أن يفشل الطلب بالكامل لضمان اتساق البيانات
+            
+            order.total_price = calculated_total_price.quantize(Decimal('0.01'))
+            order.complete = True # افترض أن الطلب أصبح كاملاً بعد هذه الخطوة
+            order.save()
 
-        del request.session['cart'] 
-        request.session.modified = True
+            del request.session['cart']
+            request.session.modified = True
 
-        messages.success(request, 'Your order has been placed successfully!')
-        return JsonResponse({'success': True, 'order_id': order.id, 'redirect_url': f'/order-confirmation/{order.id}/'})
+            messages.success(request, 'Your order has been placed successfully!')
+            return JsonResponse({'success': True, 'order_id': order.id, 'redirect_url': f'/order-confirmation/{order.id}/'})
 
     except Exception as e:
         messages.error(request, 'There was an error processing your order. Please try again.')
         print(f"Order processing error: {e}") # Log the error for debugging
         return JsonResponse({'success': False, 'message': f'Error processing order: {str(e)}'}, status=500)
+
 
 def order_confirmation(request, order_id):
     order = get_object_or_404(Order, id=order_id)
