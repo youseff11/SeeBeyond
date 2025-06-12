@@ -7,13 +7,19 @@ from products.models import Product
 
 User = get_user_model()
 
-
 class Order(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('processing', 'Processing'),
+        ('shipped', 'Shipped'),
+        ('completed', 'Completed'),
+        ('cancelled', 'Cancelled'),
+    ]
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
-    complete = models.BooleanField(default=False)
-    transaction_id = models.CharField(max_length=100, null=True, blank=True)
-    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    transaction_id = models.CharField(max_length=100, blank=True, null=True)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     class Meta:
         ordering = ['-date_ordered']
@@ -21,7 +27,8 @@ class Order(models.Model):
         verbose_name_plural = "Orders"
 
     def __str__(self):
-        return f"Order {self.id} by {self.user.username if self.user else 'Guest'}"
+        return f"Order {self.id} by {self.user.username if self.user else 'Guest'} - {self.status}"
+
 
     @property
     def get_cart_total(self):

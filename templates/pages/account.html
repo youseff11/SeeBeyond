@@ -109,7 +109,11 @@
                                 <div class="order-item">
                                     <h3>Order #{{ order.id }}</h3>
                                     <p>Date: {{ order.date_ordered|date:"Y-m-d H:i" }}</p>
-                                    <p>Status: <span class="status-{{ order.complete|yesno:'completed,pending' }}">{% if order.complete %}Completed{% else %}Pending{% endif %}</span></p>
+                                    <p>Status:
+                                       <span class="status-badge status-{{ order.status }}">
+                                         {{ order.get_status_display }}
+                                       </span>
+                                    </p>
                                     <p>Total: ${{ order.total_price }}</p>
                                     <a href="{% url 'order_confirmation' order.id %}" class="btn-details">View Details</a>
                                 </div>

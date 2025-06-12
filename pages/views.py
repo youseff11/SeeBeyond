@@ -9,9 +9,9 @@ import json
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash 
 from decimal import Decimal
-from .models import Order, OrderItem, Profile # تأكد من استيراد Profile
+from .models import Order, OrderItem, Profile 
 from products.models import Product
-from .forms import CustomUserCreationForm, ProfileUpdateForm # تأكد من استيراد ProfileUpdateForm
+from .forms import CustomUserCreationForm, ProfileUpdateForm 
 from django.db import transaction # استيراد المعاملات
 
 # --- 1. User Authentication & Authorization Views ---
@@ -63,11 +63,9 @@ def user_logout(request):
 # --- 2. General Page Views ---
 
 def home(request):
-    """Renders the home page."""
     return render(request, 'pages/home.html')
 
 def policies(request):
-    """Renders the policies page."""
     return render(request, 'pages/policies.html')
 
 def add_address(request):
@@ -77,9 +75,6 @@ def add_address(request):
 
 @login_required 
 def account(request):
-    """
-    Handles user profile updates and displays user orders.
-    """
     user_profile, created = Profile.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
@@ -87,7 +82,7 @@ def account(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Your profile has been updated successfully!')
-            return redirect('account') # Redirect to the same page to show updated data and messages
+            return redirect('account') 
         else:
             messages.error(request, 'Please correct the errors below.')
     else:
@@ -98,7 +93,7 @@ def account(request):
     context = {
         'form': form,
         'user': request.user,
-        'orders': user_orders, # هنا بنمرر كائن (QuerySet) من موديل Order للقالب
+        'orders': user_orders,
     }
     return render(request, 'pages/account.html', context)
 
@@ -127,13 +122,13 @@ def add_to_cart(request):
         else:
             cart[product_id_str] = {
                 'name': product.name,
-                'price': str(product.price), # Store as string to avoid Decimal serialization issues
+                'price': str(product.price),
                 'quantity': 1,
                 'image_url': product.image.url if product.image else ''
             }
 
         request.session['cart'] = cart
-        request.session.modified = True # Mark session as modified
+        request.session.modified = True
 
         cart_count = sum(item['quantity'] for item in cart.values())
 
@@ -257,13 +252,8 @@ def remove_from_cart(request):
         return JsonResponse({'success': False, 'message': str(e)}, status=500)
 
 # --- 5. Order Processing Views ---
-
 @require_POST
 def process_order(request):
-    """
-    Processes the cart content into a new order and order items in the database.
-    Requires POST request.
-    """
     transaction_id = request.POST.get('transaction_id', None)
 
     if request.user.is_authenticated:
@@ -276,17 +266,15 @@ def process_order(request):
         return JsonResponse({'success': False, 'message': 'Your cart is empty. Cannot process an empty order.'}, status=400)
 
     try:
-        with transaction.atomic(): #  ابدأ المعاملة هنا
+        with transaction.atomic():  # ابدأ المعاملة هنا
             order = Order.objects.create(
                 user=customer,
-                complete=False,
+                status='pending',  # ← الحالة الجديدة بدلاً من complete
                 transaction_id=transaction_id,
                 total_price=Decimal('0.00')
             )
 
             calculated_total_price = Decimal('0.00')
-            
-            # قائمة لتخزين معرفات المنتجات التي لم يتم العثور عليها أو التي سببت مشاكل
             problematic_products = []
 
             for product_id_str, item_data in cart.items():
@@ -306,39 +294,34 @@ def process_order(request):
                     )
                     calculated_total_price += (price_at_order * quantity)
                 except Product.DoesNotExist:
-                    # إذا لم يتم العثور على المنتج، أضفه إلى قائمة المنتجات التي بها مشاكل
                     problematic_products.append(f"Product with ID {product_id_str} not found.")
                     print(f"Product with ID {product_id_str} not found during order processing, skipping.")
-                    # يمكنك هنا اختيار رفع استثناء لوقف المعاملة بالكامل إذا كنت لا تريد تخطي المنتجات المفقودة
-                    # raise  # uncomment to raise error and rollback transaction
                 except Exception as e:
-                    # أي خطأ آخر في إنشاء OrderItem
                     problematic_products.append(f"Error for product ID {product_id_str}: {e}")
                     print(f"Error creating OrderItem for product {product_id_str}: {e}")
-                    # raise  # uncomment to raise error and rollback transaction
 
-            # إذا كانت هناك أي منتجات بها مشاكل، يمكنك التعامل معها هنا
             if problematic_products:
-                # إذا كنت تريد أن تفشل المعاملة بالكامل في حالة وجود أي مشكلة:
                 raise Exception(f"Failed to process order due to issues with some products: {'; '.join(problematic_products)}")
-                # وإلا، يمكنك الاستمرار مع الطلب الناجح جزئياً
-                # ولكن من الأفضل أن يفشل الطلب بالكامل لضمان اتساق البيانات
-            
+
             order.total_price = calculated_total_price.quantize(Decimal('0.01'))
-            order.complete = True # افترض أن الطلب أصبح كاملاً بعد هذه الخطوة
+            # هنا ممكن تخليها تفضل "pending"، أو تغيرها حسب منطقتك اللوجستية
             order.save()
 
+            # حذف السلة من الجلسة
             del request.session['cart']
             request.session.modified = True
 
             messages.success(request, 'Your order has been placed successfully!')
-            return JsonResponse({'success': True, 'order_id': order.id, 'redirect_url': f'/order-confirmation/{order.id}/'})
+            return JsonResponse({
+                'success': True,
+                'order_id': order.id,
+                'redirect_url': f'/order-confirmation/{order.id}/'
+            })
 
     except Exception as e:
         messages.error(request, 'There was an error processing your order. Please try again.')
-        print(f"Order processing error: {e}") # Log the error for debugging
+        print(f"Order processing error: {e}")
         return JsonResponse({'success': False, 'message': f'Error processing order: {str(e)}'}, status=500)
-
 
 def order_confirmation(request, order_id):
     order = get_object_or_404(Order, id=order_id)
