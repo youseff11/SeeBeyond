@@ -115,7 +115,8 @@ STATIC_URL = '/static/'
 # STATICFILES_DIRS: قائمة المجلدات الإضافية التي يجب على Django البحث فيها عن الملفات الثابتة.
 # هذا يشير إلى مجلد 'static' الموجود داخل مجلد 'project' الرئيسي.
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'project', 'static') 
+    os.path.join(BASE_DIR, 'project', 'static'),
+     os.path.join(BASE_DIR, 'static'),
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
