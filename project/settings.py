@@ -15,8 +15,8 @@ IS_PRODUCTION_ENV = os.environ.get('DATABASE_URL') is not None
 DEBUG = not IS_PRODUCTION_ENV
 
 ALLOWED_HOSTS = [
-    '.vercel.app', '.now.sh', 'localhost', '127.0.0.1',
-    'seebeyond-6fhyt5cxt-youseff11s-projects.vercel.app'
+    '.onrender.com',  # ضروري عشان دومين Render
+    'localhost', '127.0.0.1'
 ]
 
 INSTALLED_APPS = [
@@ -95,7 +95,7 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'project', 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'project', 'static')
 ]
