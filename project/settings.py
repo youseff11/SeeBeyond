@@ -14,10 +14,7 @@ if not SECRET_KEY:
 IS_PRODUCTION_ENV = os.environ.get('DATABASE_URL') is not None
 DEBUG = not IS_PRODUCTION_ENV
 
-ALLOWED_HOSTS = [
-    '.onrender.com',  # ضروري عشان دومين Render
-    'localhost', '127.0.0.1'
-]
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'contact.apps.ContactConfig',
