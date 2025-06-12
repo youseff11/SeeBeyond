@@ -1,0 +1,113 @@
+/* your_project/static/css/product_detail.css */
+
+.product-detail-container {
+    display: flex; /* لترتيب الصورة والمعلومات جنباً إلى جنب */
+    flex-direction: column; /* للترتيب العمودي في الشاشات الصغيرة */
+    align-items: center;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    gap: 30px; /* المسافة بين الصورة والمعلومات */
+}
+
+@media (min-width: 768px) {
+    .product-detail-container {
+        flex-direction: row; /* للترتيب الأفقي في الشاشات الكبيرة */
+        text-align: left;
+    }
+}
+
+.product-image-section {
+    flex: 1; /* هيأخد مساحة متساوية مع الـ info section */
+    text-align: center;
+    max-width: 100%;
+}
+
+.product-image-section img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.product-info-section {
+    flex: 1; /* هيأخد مساحة متساوية مع الـ image section */
+    padding: 0 20px; /* مسافة داخلية من الجوانب */
+}
+
+.product-info-section .product-name {
+    font-size: 2.2em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.product-info-section .product-price {
+    font-size: 1.8em;
+    color: #28a745; /* لون أخضر للسعر */
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.product-info-section .product-description {
+    font-size: 1.1em;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.btn-add-to-cart {
+    background-color: #007bff; /* لون أزرق لزرار الإضافة للعربة */
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 15px;
+}
+
+.btn-add-to-cart:hover {
+    background-color: #0056b3;
+}
+
+.btn-back-to-shop {
+    background-color: #6c757d; /* لون رمادي لزرار العودة للشوب */
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    text-decoration: none; /* لإزالة خط التسطير من اللينك */
+    display: inline-block; /* عشان ياخد نفس خصائص الزرار */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-back-to-shop:hover {
+    background-color: #5a6268;
+}
+
+/* عشان الرسالة لو المنتج مش موجود */
+.product-detail-container p.error-message {
+    text-align: center;
+    font-size: 1.2em;
+    color: #dc3545;
+    margin-top: 50px;
+}
+
+/* Basic responsive adjustments */
+@media (max-width: 767px) {
+    .product-info-section {
+        padding: 0;
+        text-align: center;
+    }
+    .btn-add-to-cart, .btn-back-to-shop {
+        display: block;
+        width: 80%;
+        margin: 10px auto;
+    }
+}
