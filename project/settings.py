@@ -20,8 +20,7 @@ else:
     DEBUG = True
 
 # سمح بالوصول من نطاقات Vercel والتطوير المحلي
-ALLOWED_HOSTS = ['.vercel.app', 'localhost', '127.0.0.1']
-
+ALLOWED_HOSTS = ['.vercel.app', '.now.sh', 'localhost', '127.0.0.1']
 INSTALLED_APPS = [
     'contact.apps.ContactConfig',
     'products.apps.ProductsConfig',
@@ -62,8 +61,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'project.wsgi.app' # تأكد أن هذا يشير إلى 'app' هنا
-
+WSGI_APPLICATION = 'project.wsgi.application'
 
 # Database
 DATABASE_URL = os.environ.get('DATABASE_URL')
@@ -133,3 +131,7 @@ LOGIN_URL = 'login'
 
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
+
+WHITENOISE_MANIFEST_STRICT = False
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_AUTOREFRESH = DEBUG
