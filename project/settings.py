@@ -1,15 +1,29 @@
-from dotenv import load_dotenv
 from pathlib import Path
 import os
-import dj_database_url
 
-load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 if not SECRET_KEY:
     raise ValueError("SECRET_KEY environment variable not set.")
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}
+
+
+
 
 IS_PRODUCTION_ENV = os.environ.get('DATABASE_URL') is not None
 DEBUG = not IS_PRODUCTION_ENV
