@@ -101,40 +101,35 @@ main {
     background: linear-gradient(135deg, #5a6268, #444b50);
 }
 
-/* Responsive */
-/* هذا الجزء يمكنك إضافته أو تعديل الجزء الموجود لديك في ملف test.css */
 
-/* Adjustments for screens up to 768px wide */
 @media (max-width: 768px) {
     .product-detail-container {
         flex-direction: column; /* Keep stacking for overall layout */
         align-items: center;
         padding: 20px; /* Reduced padding slightly */
-        /* Reduce card width on smaller screens */
         width: 90%; /* Make the card take 90% of the viewport width */
         margin: 20px auto; /* Center the card */
     }
 
     .product-image-section,
     .product-info-section {
-        max-width: 90%; /* Ensure they take full width within the container */
-        width: 90%; /* Explicitly set width */
+        max-width: 100%; 
+        width: 100%; 
     }
 
     .product-image-section img {
-        max-width: 100%; /* Make image slightly smaller than 100% of its section */
+        max-width: 100%;
         height: auto;
-        margin: 0 auto; /* Center the image */
+        margin: 0 auto; 
     }
 
-    /* Make buttons side-by-side */
-    .product-actions { /* Assuming you wrapped your buttons in a .product-actions div */
-        display: flex; /* Use flexbox for buttons */
-        flex-direction: row; /* Arrange buttons in a row */
-        justify-content: center; /* Center buttons horizontally */
-        flex-wrap: wrap; /* Allow buttons to wrap if screen is too narrow */
-        gap: 10px; /* Space between buttons */
-        margin-top: 20px; /* Add some space above buttons */
+    .product-actions {
+        display: flex; 
+        flex-direction: row;
+        justify-content: center; 
+        flex-wrap: wrap; 
+        gap: 10px; 
+        margin-top: 20px; 
     }
         .btns{
             display: flex;
@@ -142,23 +137,22 @@ main {
         }
     .btn-add-to-cart,
     .btn-back-to-shop {
-        width: 35%; /* Each button takes roughly half the width, accounting for gap */
+        width: 35%; 
         text-align: center;
-        margin: 0; /* Reset margin from previous rule if any */
-        padding: 10px 15px; /* Adjust padding for smaller buttons */
-        font-size: 0.95em; /* Slightly smaller font size */
+        margin: 0; 
+        padding: 10px 15px; 
+        font-size: 0.95em; 
     }
 
-    /* Further adjustment for very small screens if buttons still don't fit side-by-side */
     @media (max-width: 480px) {
         .product-actions {
-            flex-direction: column; /* Stack buttons vertically again on very small screens */
+            flex-direction: column; 
             gap: 10px;
         }
 
         .btn-add-to-cart,
         .btn-back-to-shop {
-            width: 100%; /* Full width for very small screens */
+            width: 100%; 
         }
     }
 }
