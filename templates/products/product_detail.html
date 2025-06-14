@@ -19,11 +19,8 @@
                     <p class="product-price">${{ product.price|floatformat:2 }}</p>
                     <p class="product-description">{{ product.description }}</p>
                     {# زرار إضافة للعربة أو أي أزرار تانية #}
-                    <div class="btns">
                     <button class="btn-add-to-cart" data-product-id="{{ product.id }}">Add to Cart</button>
                     <a href="{% url 'shop' %}" class="btn-back-to-shop">Back to Shop</a> {# <--- تأكد إن 'shop' هو اسم الـ URL الصحيح لصفحة الشوب #}
-                    </div>
-
                 </div>
             {% else %}
                 <p>Product not found.</p>
