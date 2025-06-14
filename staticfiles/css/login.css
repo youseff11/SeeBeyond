@@ -50,13 +50,14 @@ body {
 .input_group {
     position: relative;
     margin-bottom: 25px; /* Spacing between input groups */
-    display: flex;
-    align-items: center; /* Align icon and input */
+    display: flex; /* Keep flex for icon and input alignment */
+    align-items: center; /* Center icon and input vertically */
     border: 1px solid #e0e0e0; /* Light border */
     border-radius: 8px; /* Rounded input fields */
     padding: 10px 15px; /* Padding inside the input group */
     background-color: #f8f9fa; /* Slightly off-white background for input fields */
     transition: all 0.3s ease;
+    box-sizing: border-box;
 }
 
 .input_group:focus-within {
@@ -84,6 +85,7 @@ body {
     font-size: 1em;
     color: #555;
     background: transparent; /* Make input background transparent within the group */
+    width: 100%; /* Ensure input takes full width */
 }
 
 .input_text::placeholder {
@@ -139,7 +141,11 @@ button.footer:active {
     color: rgb(65, 85, 200);
 }
 
-/* Message Styling (as defined in your HTML, improved for consistency) */
+/* ------------------------------------------- */
+/* --- IMPROVED ERROR AND MESSAGE STYLING --- */
+/* ------------------------------------------- */
+
+/* General Message Styling (for Django messages like success, info, error) */
 .messages {
     list-style-type: none;
     padding: 0;
@@ -154,6 +160,7 @@ button.footer:active {
     font-size: 0.95em;
     border: 1px solid transparent; /* Default transparent border */
     box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* Subtle shadow for messages */
+    font-weight: 500; /* Medium font-weight for messages */
 }
 
 .messages li.success {
@@ -174,25 +181,46 @@ button.footer:active {
     border-color: #bee5eb; /* Blue border */
 }
 
-/* Error List for Form Fields (if form.non_field_errors) */
-.errorlist {
+/* Error List for Form (now consolidated at the top) */
+.errorlist.top-level-errorlist { /* Target the new class for the top error block */
     color: #721c24; /* Dark red */
     background-color: #f8d7da; /* Light red background */
     border: 1px solid #f5c6cb;
-    border-radius: 8px; /* Consistent rounded corners */
-    padding: 12px 15px;
-    margin-bottom: 20px;
+    border-radius: 8px;
+    padding: 12px 15px; 
+    margin-bottom: 20px; 
     list-style-type: none;
     text-align: left;
-    font-size: 0.9em;
+    font-size: 0.95em; /* Slightly larger font for prominence */
+    width: 100%; /* Ensure it takes full width */
+    box-sizing: border-box; /* Include padding/border in width */
 }
 
-.errorlist li {
+.errorlist.top-level-errorlist li {
     margin: 0;
     padding: 0;
+    line-height: 1.5; /* Good line height for readability */
 }
 
-/* Responsive adjustment (already in your HTML, keeping it here for completeness) */
+.input_group .errorlist {
+    display: none; 
+}
+
+.input_group:has(.errorlist) {
+    border-color: #e0e0e0; 
+    box-shadow: none; 
+}
+
+.input_group:has(.errorlist) .fa {
+    color: #999; 
+}
+
+/* Hide default labels */
+.input_group label {
+    display: none;
+}
+
+/* Responsive adjustment */
 @media (max-width: 991px) {
    .login_form_container {
        width: 90%;
