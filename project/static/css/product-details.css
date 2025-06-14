@@ -133,26 +133,17 @@ main {
     }
         .btns{
             display: flex;
+            width: 90%;
             gap: 1rem;
         }
     .btn-add-to-cart,
     .btn-back-to-shop {
-        width: 35%; 
-        text-align: center;
-        margin: 0; 
-        padding: 10px 15px; 
-        font-size: 0.95em; 
-    }
+      width: 28%; /* ⬅️ صغرنا العرض من 35% إلى 28% */
+      text-align: center;
+      margin: 0;
+      padding: 8px 12px; /* ⬅️ صغرنا البادينج */
+      font-size: 0.85em; /* ⬅️ قللنا حجم الخط */
+      border-radius: 8px; /* ⬅️ اختياري للتنعيم */
+}
 
-    @media (max-width: 480px) {
-        .product-actions {
-            flex-direction: column; 
-            gap: 10px;
-        }
-
-        .btn-add-to-cart,
-        .btn-back-to-shop {
-            width: 100%; 
-        }
-    }
 }
