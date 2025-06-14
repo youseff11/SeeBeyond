@@ -104,9 +104,12 @@ def account(request):
 
 
 # --- 4. Cart Management Views ---
-
 @require_POST
 def add_to_cart(request):
+    # Check if the user is authenticated
+    if not request.user.is_authenticated:
+        return JsonResponse({'success': False, 'message': 'Please log in first.'}, status=401) # 401 Unauthorized
+
     try:
         data = json.loads(request.body)
         product_id = data.get('product_id')
