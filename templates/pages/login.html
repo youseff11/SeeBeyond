@@ -10,31 +10,16 @@
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
 
     <style>
+        /* These media queries can be moved to login.css if not already there */
         @media (max-width: 991px) {
            .login_form_container {
              width: 90%;
            }
-           .fotter { 
+           .footer { /* Corrected from .fotter to .footer to match button class */
              width: 90%;
            }
         }
-        /* Style for form errors */
-        .errorlist {
-            color: #721c24; /* Bootstrap danger red */
-            background-color: #f8d7da; /* Bootstrap danger background */
-            border: 1px solid #f5c6cb;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 10px;
-            list-style-type: none;
-        }
-        .errorlist li {
-            margin: 0;
-            padding: 0;
-        }
-        .input_group label { /* إخفاء الـ labels الافتراضية اللي بتيجي مع الـ form fields */
-            display: none;
-        }
+        /* The .errorlist and .input_group label styles are now handled in login.css */
     </style>
 </head>
 <body>
@@ -42,68 +27,77 @@
         <div class="login_form">
             <h2>Login</h2>
 
+            {# Django Messages (Success, Error, Info from views) #}
             {% if messages %}
                 <ul class="messages" style="list-style-type: none; padding: 0; margin-bottom: 10px;">
                     {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %} 
-                            style="padding: 10px; margin-bottom: 5px; border-radius: 5px; 
-                                   {% if 'success' in message.tags %}background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;{% endif %}
-                                   {% if 'error' in message.tags %}background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;{% endif %}
-                                   {% if 'info' in message.tags %}background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb;{% endif %}
-                                   ">
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}
+                            style="padding: 10px; margin-bottom: 5px; border-radius: 5px;
+                                        {% if 'success' in message.tags %}background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;{% endif %}
+                                        {% if 'error' in message.tags %}background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;{% endif %}
+                                        {% if 'info' in message.tags %}background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb;{% endif %}
+                                        ">
                             {{ message }}
                         </li>
                     {% endfor %}
                 </ul>
             {% endif %}
 
-            <form action="{% url 'login' %}" method="POST"> {# تأكد من اسم الـ URL هنا #}
-                {% csrf_token %} 
-                
-                {# عرض الأخطاء العامة للـ form لو فيه (non-field errors) #}
-                {% if form.non_field_errors %}
-                    <ul class="errorlist">
-                        {% for error in form.non_field_errors %}
-                            <li>{{ error }}</li>
+            <form action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+
+                {# Consolidated Form Errors at the Top #}
+                {% if form.errors %}
+                    <ul class="errorlist top-level-errorlist"> {# Using the same class as signup for consistent styling #}
+                        {% for field, errors in form.errors.items %}
+                            {% if field == '__all__' %}
+                                {# Handle non-field errors (e.g., "Invalid credentials") #}
+                                {% for error in errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            {% else %}
+                                {# Handle field-specific errors (e.g., "This field is required") #}
+                                {% for error in errors %}
+                                    <li><strong>{{ field|capfirst }}:</strong> {{ error }}</li>
+                                {% endfor %}
+                            {% endif %}
                         {% endfor %}
                     </ul>
                 {% endif %}
 
                 {# Username Field #}
                 <div class="input_group">
-                    <i class="fa fa-user"></i> 
-                    {# استخدام form.username لإضافة الـ input field #}
-                    {{ form.username.errors }} {# عرض أخطاء الحقل ده لوحدها #}
+                    <i class="fa fa-user"></i>
                     <input
                         type="text"
-                        name="{{ form.username.name }}" {# مهم جداً نستخدم name اللي الـ form متوقعاه #}
+                        name="{{ form.username.name }}"
                         placeholder="Username"
                         class="input_text"
                         autocomplete="off"
                         required
-                        value="{{ form.username.value|default:'' }}" {# عشان لو فيه قيمة كتبها تفضل موجودة بعد الـ submit #}
+                        value="{{ form.username.value|default:'' }}"
                     />
                 </div>
 
                 {# Password Field #}
                 <div class="input_group">
-                    <i class="fa fa-unlock-alt"></i> 
-                    {{ form.password.errors }} {# عرض أخطاء الحقل ده لوحدها #}
+                    <i class="fa fa-lock"></i> {# Changed to fa-lock for consistency #}
                     <input
                         type="password"
-                        name="{{ form.password.name }}" {# مهم جداً نستخدم name اللي الـ form متوقعاه #}
+                        name="{{ form.password.name }}"
                         placeholder="Password"
                         class="input_text"
                         autocomplete="off"
                         required
                     />
                 </div>
-                
-                <button type="submit" class="footer">Login</button> {# غيرت النص عشان يكون أوضح #}
+
+                <button type="submit" class="footer">Login</button>
             </form>
+
             <div class="footer-txt">
                 <p>Forgot Password?</p>
-                <a href="{% url 'signup' %}">Sign Up</a> {# تأكد من اسم الـ URL هنا #}
+                <a href="{% url 'signup' %}">Sign Up</a>
             </div>
         </div>
     </div>
