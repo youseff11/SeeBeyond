@@ -8,9 +8,11 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
-if not SECRET_KEY:
-    raise ValueError("SECRET_KEY environment variable not set.")
+# SECRET_KEY = os.environ.get('SECRET_KEY')
+# if not SECRET_KEY:
+#     raise ValueError("SECRET_KEY environment variable not set.")
+SECRET_KEY='qsjZEd_RMngZfCervEoKhKFd7RzSiKS5GhVJYCTmH9TR-J8-VmSiyc53LlxrqGaJrOY'
+
 
 # Check if DATABASE_URL is set (indicating a production environment like Heroku)
 IS_PRODUCTION_ENV = os.environ.get('DATABASE_URL') is not None
