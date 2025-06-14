@@ -258,7 +258,6 @@
         grid-template-columns: 1fr;
     }
 }
-
 /* Newsletter Section */
 .premium-newsletter {
     padding: 80px 0;
@@ -384,11 +383,16 @@
     margin-right: 8px; /* Changed from 'margin-left' to 'margin-right' for LTR */
     color: #ffd700;
 }
+
 @media (max-width: 768px) {
     .newsletter-content {
-        flex-direction: column; /* Stacks items vertically on smaller screens */
-        text-align: center; /* Centers text */
+        flex-direction: column; /* Stack items vertically */
+        text-align: center; /* Center text */
         padding: 20px; /* Adjust padding for mobile */
+    }
+
+    .newsletter-text {
+        padding: 0; /* Remove horizontal padding on text for mobile */
     }
 
     .newsletter-text h2 {
@@ -403,32 +407,47 @@
 
     .newsletter-form {
         width: 100%; /* Full width for the form */
+        padding: 0; /* Remove horizontal padding on form for mobile */
     }
 
     .input-group {
-        flex-direction: column; /* Stack input and button */
-        gap: 10px; /* Space between input and button */
+        flex-direction: column; /* Stack input and button vertically */
+        border-radius: 10px; /* Adjust border-radius for stacked elements */
+        box-shadow: none; /* Remove shadow when stacked */
     }
 
     .input-group input[type="email"] {
         width: 100%; /* Full width for email input */
-        padding: 12px; /* Adjust padding */
+        padding: 15px; /* Adjust padding */
+        border-bottom: 1px solid #eee; /* Add a subtle border between input and button */
+        border-radius: 10px 10px 0 0; /* Rounded corners only at the top */
         text-align: center; /* Center placeholder text */
     }
 
     .btn-subscribe {
         width: 100%; /* Full width for the subscribe button */
-        padding: 12px; /* Adjust padding */
+        padding: 15px; /* Adjust padding */
+        border-radius: 0 0 10px 10px; /* Rounded corners only at the bottom */
+        justify-content: center; /* Center content within the button */
+    }
+
+    .btn-subscribe:hover {
+        padding: 15px; /* Keep padding consistent on hover for mobile */
+    }
+
+    .btn-subscribe i {
+        margin-left: 8px; /* Maintain consistent spacing */
     }
 
     .newsletter-features {
         flex-direction: column; /* Stack features vertically */
-        gap: 15px; /* Space between feature items */
-        margin-top: 20px; /* Add some space above features */
+        gap: 10px; /* Reduce space between feature items */
+        margin-top: 25px; /* Add some space above features */
     }
 
     .feature-item {
         justify-content: center; /* Center feature icon and text */
         text-align: center; /* Center text within feature item */
+        font-size: 0.9rem; /* Keep consistent font size */
     }
 }
