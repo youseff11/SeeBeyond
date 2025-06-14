@@ -2,7 +2,7 @@ from pathlib import Path
 import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = False
+DEBUG = True
 
 SECRET_KEY='qsjZEd_RMngZfCervEoKhKFd7RzSiKS5GhVJYCTmH9TR-J8-VmSiyc53LlxrqGaJrOY'
 
@@ -23,7 +23,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # Make sure Whitenoise is installed: pip install whitenoise
+    # 'whitenoise.middleware.WhiteNoiseMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -78,10 +78,10 @@ STATICFILES_DIRS = [
 ]
 
 # Whitenoise setup for serving static files in production
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-WHITENOISE_MANIFEST_STRICT = False
-WHITENOISE_USE_FINDERS = True
-WHITENOISE_AUTOREFRESH = DEBUG # Autorefresh only in debug mode
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# WHITENOISE_MANIFEST_STRICT = False
+# WHITENOISE_USE_FINDERS = True
+# WHITENOISE_AUTOREFRESH = DEBUG # Autorefresh only in debug mode
 
 # Media files configuration (you will need cloud storage for production)
 MEDIA_URL = '/media/'
