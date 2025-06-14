@@ -384,7 +384,6 @@
     margin-right: 8px; /* Changed from 'margin-left' to 'margin-right' for LTR */
     color: #ffd700;
 }
-
 @media (max-width: 768px) {
     .newsletter-content {
         flex-direction: column; /* Stacks items vertically on smaller screens */

@@ -50,15 +50,24 @@ def user_signup(request):
             messages.success(request, f'Account for {user.username} created successfully! You can now log in.')
             return redirect('login')
         else:
-            messages.error(request, 'Please correct the errors below.')
+            for field, errors in form.errors.items():
+                for error in errors:
+                    if field == '__all__':
+                        messages.error(request, error)
+                    else:
+                        messages.error(request, f"{form.fields[field].label}: {error}")
     else:
         form = CustomUserCreationForm()
+    
     return render(request, 'pages/signup.html', {'form': form})
 
 def user_logout(request):
+    """
+    Logs out the current user.
+    """
     logout(request)
     messages.info(request, 'You have been logged out successfully.')
-    return redirect('home') 
+    return redirect('home')
 
 # --- 2. General Page Views ---
 

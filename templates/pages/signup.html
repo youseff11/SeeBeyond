@@ -68,7 +68,6 @@
                 {# Username Field #}
                 <div class="input_group">
                     <i class="fa fa-user"></i>
-                    {# استخدام form.username لإضافة الـ input field #}
                     {{ form.username.errors }} {# عرض أخطاء الحقل ده لوحدها #}
                     <input
                         type="text"
@@ -78,6 +77,21 @@
                         autocomplete="off"
                         required
                         value="{{ form.username.value|default:'' }}" {# عشان لو فيه قيمة كتبها تفضل موجودة بعد الـ submit #}
+                    />
+                </div>
+
+                {# Email Field (New) #}
+                <div class="input_group">
+                    <i class="fa fa-envelope"></i> {# أيقونة للبريد الإلكتروني #}
+                    {{ form.email.errors }} {# عرض أخطاء الحقل ده لوحدها #}
+                    <input
+                        type="email"
+                        name="{{ form.email.name }}"
+                        placeholder="Enter Email"
+                        class="input_text"
+                        autocomplete="off"
+                        required
+                        value="{{ form.email.value|default:'' }}"
                     />
                 </div>
 
