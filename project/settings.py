@@ -2,7 +2,7 @@ from pathlib import Path
 import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = True
+DEBUG = False
 
 SECRET_KEY='qsjZEd_RMngZfCervEoKhKFd7RzSiKS5GhVJYCTmH9TR-J8-VmSiyc53LlxrqGaJrOY'
 
