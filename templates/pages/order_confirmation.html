@@ -4,29 +4,29 @@
 {% block content %}
 <style>
 .confirmation-container {
-    max-width: 700px; /* Slightly reduced max-width for better focus */
+    max-width: 700px;
     margin: 60px auto;
-    padding: 40px; /* Increased padding */
-    border: 1px solid #e0e0e0; /* Lighter border */
-    border-radius: 12px; /* More rounded corners */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08); /* Softer, more pronounced shadow */
+    padding: 40px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
     background-color: #ffffff;
     text-align: center;
-    font-family: 'Segoe UI', 'Roboto', sans-serif; /* Modern, clean font stack */
-    color: #333; /* Darker text for readability */
+    font-family: 'Segoe UI', 'Roboto', sans-serif;
+    color: #333;
 }
 
 .confirmation-container h1 {
     color: #28a745;
-    font-size: 2.8em; /* Larger, more impactful heading */
+    font-size: 2.8em;
     margin-bottom: 25px;
-    font-weight: 700; /* Bolder for emphasis */
-    letter-spacing: -0.5px; /* Slight letter spacing for visual appeal */
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 .confirmation-container p {
     font-size: 1.1em;
-    line-height: 1.6; /* Improved line spacing for readability */
+    line-height: 1.6;
     color: #555;
     margin-bottom: 15px;
 }
@@ -35,7 +35,7 @@
     margin-top: 30px;
     margin-bottom: 30px;
     padding: 20px;
-    background-color: #f9f9f9; /* Light background for detail section */
+    background-color: #f9f9f9;
     border-radius: 8px;
     border: 1px solid #f0f0f0;
 }
@@ -51,7 +51,7 @@ h3 {
     margin-top: 40px;
     margin-bottom: 20px;
     font-weight: 600;
-    position: relative; /* For the subtle line below */
+    position: relative;
     padding-bottom: 10px;
 }
 
@@ -63,7 +63,7 @@ h3::after {
     transform: translateX(-50%);
     width: 60px;
     height: 3px;
-    background-color: #28a745; /* Green underline matching success color */
+    background-color: #28a745;
     border-radius: 2px;
 }
 
@@ -75,15 +75,15 @@ h3::after {
     padding-top: 15px;
     background-color: #ffffff;
     border-radius: 8px;
-    overflow: hidden; /* Ensures border-radius applies to content */
+    overflow: hidden;
 }
 
 .order-items-list li {
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Vertically center items */
-    padding: 12px 20px; /* More padding for list items */
-    border-bottom: 1px dashed #e5e5e5; /* Lighter, more subtle dashed line */
+    align-items: center;
+    padding: 12px 20px;
+    border-bottom: 1px dashed #e5e5e5;
     font-size: 1.05em;
     color: #444;
 }
@@ -97,24 +97,91 @@ h3::after {
     color: #333;
 }
 
-.back-to-shop {
-    display: inline-block;
-    margin-top: 40px; /* More space above the button */
-    padding: 14px 28px; /* Larger button for better clickability */
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    border-radius: 30px; /* Pill-shaped button */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Added transform for hover effect */
-    font-weight: 600;
-    font-size: 1.1em;
-    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2); /* Subtle button shadow */
+/* Button Group Styling */
+.button-group {
+    display: flex;
+    flex-wrap: wrap; /* Allows buttons to wrap on smaller screens */
+    justify-content: center; /* Centers buttons horizontally */
+    gap: 15px; /* Space between buttons */
+    margin-top: 40px;
 }
 
-.back-to-shop:hover {
+.button-group .btn {
+    display: inline-block;
+    padding: 12px 25px; /* Slightly reduced padding */
+    text-decoration: none;
+    border-radius: 25px; /* Slightly less rounded */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    font-weight: 600;
+    font-size: 1em; /* Slightly smaller font size */
+    min-width: 180px; /* Reduced minimum width */
+    text-align: center;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+}
+
+/* Specific button styles */
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
     background-color: #0056b3;
-    transform: translateY(-2px); /* Slight lift on hover */
-    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3); /* Enhanced shadow on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 123, 255, 0.25);
+}
+
+.btn-secondary {
+    background-color: #6c757d; /* A neutral gray for the second button */
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(108, 117, 125, 0.25);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+    .confirmation-container {
+        margin: 30px 15px;
+        padding: 30px 20px;
+    }
+
+    .confirmation-container h1 {
+        font-size: 2.2em;
+    }
+
+    .confirmation-container p {
+        font-size: 1em;
+    }
+
+    h3 {
+        font-size: 1.6em;
+    }
+
+    .order-items-list li {
+        flex-direction: column; /* Stack items vertically */
+        align-items: flex-start;
+        padding: 10px 15px;
+    }
+
+    .order-items-list li span:first-child {
+        margin-bottom: 5px;
+    }
+
+    .button-group {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 10px;
+    }
+
+    .button-group .btn {
+        width: 100%; /* Full width buttons */
+        min-width: unset; /* Remove min-width */
+        padding: 10px 15px;
+        font-size: 0.95em;
+    }
 }
 </style>
 
@@ -147,7 +214,10 @@ h3::after {
         <p>No items found for this order.</p>
     {% endif %}
 
-    <a href="{% url 'shop' %}" class="back-to-shop">Continue Shopping</a>
+    <div class="button-group">
+        <a href="{% url 'shop' %}" class="btn btn-primary">Continue Shopping</a>
+        <a href="{% url 'account' %}" class="btn btn-secondary">View Profile</a>
+    </div>
 </main>
 
 {% endblock content %}
