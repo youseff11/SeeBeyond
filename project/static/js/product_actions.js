@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('حدث خطأ أثناء إضافة المنتج للعربة.');
+                alert('please login first');
             });
         });
     }

@@ -6,8 +6,6 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required 
 import json
-from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth import update_session_auth_hash 
 from decimal import Decimal
 from .models import Order, OrderItem, Profile 
 from products.models import Product
