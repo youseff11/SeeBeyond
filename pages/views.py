@@ -6,6 +6,8 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required 
 import json
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash 
 from decimal import Decimal
 from .models import Order, OrderItem, Profile 
 from products.models import Product
@@ -106,6 +108,7 @@ def account(request):
 def add_to_cart(request):
     # Check if the user is authenticated
     if not request.user.is_authenticated:
+        # هنا يتم إرجاع JsonResponse بـ status 401
         return JsonResponse({'success': False, 'message': 'Please log in first.'}, status=401) # 401 Unauthorized
 
     try:
